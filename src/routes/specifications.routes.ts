@@ -1,14 +1,13 @@
-import { Response, Request, Router } from 'express'
+import { Router } from 'express'
 
-import { createSpecificationController } from '../modules/cars/useCases/createSpecification'
-import { listSpecificationsController } from '../modules/cars/useCases/listSpecifications'
+import { CreateSpecificationController } from '../modules/cars/useCases/createSpecification/CreateSpecificationController'
+import { ListSpecificationsController } from '../modules/cars/useCases/listSpecifications/ListSpecificationsController'
 
 export const specificationsRoutes = Router()
 
-specificationsRoutes.post('/', (req: Request, res: Response) =>
-  createSpecificationController.handle(req, res)
-)
+const createSpecificationController = new CreateSpecificationController()
+const listSpecificationsController = new ListSpecificationsController()
 
-specificationsRoutes.get('/', (req: Request, res: Response) =>
-  listSpecificationsController.handle(req, res)
-)
+specificationsRoutes.post('/', createSpecificationController.handle)
+
+specificationsRoutes.get('/', listSpecificationsController.handle)
