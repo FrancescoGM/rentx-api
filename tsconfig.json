@@ -9,6 +9,7 @@
     "outDir": "./dist",
     "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "typeRoots": ["./src/@types/**/*.d.ts"]
   }
 }

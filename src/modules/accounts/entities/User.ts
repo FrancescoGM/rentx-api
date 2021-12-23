@@ -21,6 +21,9 @@ export class User {
   @Column('boolean')
   is_admin: boolean
 
+  @Column('varchar', { nullable: true })
+  avatar: string
+
   @CreateDateColumn()
   created_at: Date
 
