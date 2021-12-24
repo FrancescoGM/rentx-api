@@ -1,7 +1,7 @@
 {
   "name": "rentx-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "dev": "tsnd --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
