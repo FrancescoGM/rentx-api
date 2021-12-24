@@ -10,12 +10,12 @@ services:
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=ignite
-      - POSTGRES_DB=iniciando-api
+      - POSTGRES_DB=rentx
     volumes:
       - pgdata:/data/postgres
   app:
     build: .
-    container_name: iniciando-api
+    container_name: rentx
     ports:
       - '3333:3333'
     volumes:
