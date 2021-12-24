@@ -7,6 +7,7 @@
     "strict": false,
     "skipLibCheck": true,
     "outDir": "./dist",
+    "types": ["@types/jest", "node"],
     "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
