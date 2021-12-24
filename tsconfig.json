@@ -17,7 +17,7 @@
       "@errors/*": ["errors/*"],
       "@config/*": ["config/*"],
       "@utils/*": ["utils/*"],
-      "@middlewares/*": ["middlewares/*"]
+      "@shared/*": ["shared/*"]
     },
     "typeRoots": ["./src/@types/**/*.d.ts"]
   }
