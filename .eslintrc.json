@@ -17,7 +17,7 @@
   "plugins": ["prettier", "import-helpers", "@typescript-eslint"],
   "rules": {
     "camelcase": "off",
-    "import/no-unresolved": "error",
+    "import/no-unresolved": "off",
     "@typescript-eslint/naming-convention": [
       "error",
       {
@@ -47,7 +47,12 @@
       "warn",
       {
         "newlinesBetween": "always",
-        "groups": ["module", "absolute", ["parent", "sibling", "index"]],
+        "groups": [
+          "module",
+          "absolute",
+          "/^@/",
+          ["parent", "sibling", "index"]
+        ],
         "alphabetize": { "order": "asc", "ignoreCase": true }
       }
     ],

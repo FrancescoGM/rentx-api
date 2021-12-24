@@ -11,6 +11,14 @@
     "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@errors/*": ["errors/*"],
+      "@config/*": ["config/*"],
+      "@utils/*": ["utils/*"],
+      "@middlewares/*": ["middlewares/*"]
+    },
     "typeRoots": ["./src/@types/**/*.d.ts"]
   }
 }
