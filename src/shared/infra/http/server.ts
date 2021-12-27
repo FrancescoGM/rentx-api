@@ -1,13 +1,16 @@
 import express from 'express'
+import 'reflect-metadata'
 import 'express-async-errors'
 import swaggerUI from 'swagger-ui-express'
 
-import '@shared/infra/typeorm'
+import createConnection from '@shared/infra/typeorm'
+
 import '@shared/container'
 import swagger from '../../../swagger.json'
 import { errorMessage } from './middlewares/errorMessage'
 import { router } from './routes'
 
+createConnection()
 const app = express()
 
 app.use(express.json())

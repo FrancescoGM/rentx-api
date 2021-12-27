@@ -9,4 +9,5 @@ export interface ISpecificationsRepository {
   create(data: ICreateSpecificationDTO): Promise<void>
   findByName(name: string): Promise<Specification>
   list(): Promise<Specification[]>
+  findByIds(ids: string[]): Promise<Specification[]>
 }

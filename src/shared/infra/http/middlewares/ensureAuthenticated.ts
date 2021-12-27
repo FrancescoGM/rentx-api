@@ -38,6 +38,6 @@ export async function ensureAuthenticated(
 
     next()
   } catch {
-    res.status(400).json({ message: 'Token invalid' })
+    throw new AppError('Token invalid', 400)
   }
 }
