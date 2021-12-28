@@ -14,6 +14,6 @@ export class CreateCategoryController {
       description,
     })
 
-    return response.status(201).end()
+    return response.status(204).end()
   }
 }
