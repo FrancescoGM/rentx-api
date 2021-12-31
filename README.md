@@ -9,7 +9,6 @@
 **RN**
 
 - Não deve ser possível cadastrar um carro com um aplaca já existente.
-<!-- - Não deve ser possível alterar a placa de um carro já cadastrado. -->
 - O carro deve ser cadastrado, por padrão com disponibilidade.
 - Somente usuários administradores poderão cadastrar novos carros.
 
@@ -61,10 +60,59 @@
 
 - Deve ser possível cadastrar um aluguel.
 
-**RNF**
-
 **RN**
 
 - O aluguel deve ter duração mínima de 24 horas.
+- Ao realizar um aluguel, o status do carro deverá ser mudado para indisponível.
 - Não deve ser possível cadastrar um novo aluguel caso já exista um aberto para o mesmo usuário.
 - Não deve ser possível cadastrar um novo aluguel caso já exista um aberto para o mesmo carro.
+
+## Devolução do carro
+
+**RF**
+
+- Deve ser possível realizar a devolução de um carro
+
+**RN**
+
+- Se o carro for devolvido com menos de 24 horas, deverá ser cobrado diária completa.
+- Ao realizar a devolução, o carro deverá ser liberado para outro aluguel.
+- Ao realizar a devolução, o usuário deverá ser liberado para outro aluguel.
+- Ao realizar a devolução, deverá ser calculado o total do aluguel.
+- Caso o horário da devolução seja superior ao horário previsto da entrega, deverá ser cobrado multa proporcional aos dias de atraso.
+- O usuário deve estar autenticado na aplicação.
+- Caso haja multa, deverá ser somado o total do aluguel.
+
+## Cadastro de especificação
+
+**RF**
+
+- Deve ser possível cadastrar uma especificação.
+
+**RN**
+
+- Não deve ser possível cadastrar uma especificação com um nome já cadastrado.
+- Apenas administradores podem realizar o cadastro.
+
+## Listagem de especificações
+
+**RF**
+
+- Deve ser possível listar todas as especificações.
+
+## Cadastro de categoria
+
+**RF**
+
+- Deve ser possível cadastrar uma categoria.
+
+**RN**
+
+- Não deve ser possível cadastrar uma categoria com um nome já cadastrado.
+- Apenas administradores podem realizar o cadastro.
+
+## Listagem de categorias
+
+**RF**
+
+- Deve ser possível listar todas as categorias.

@@ -14,6 +14,7 @@
         "tags": ["Category"],
         "summary": "Create a new category",
         "description": "Create a new category",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -65,6 +66,7 @@
         "tags": ["Category"],
         "summary": "Import an new categories",
         "description": "Import an new categories",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -92,6 +94,7 @@
         "tags": ["Specification"],
         "summary": "Create a new specification",
         "description": "Create a new specification",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -137,9 +140,178 @@
           }
         }
       }
+    },
+    "/sessions": {
+      "post": {
+        "tags": ["Session"],
+        "summary": "Authenticate user",
+        "description": "Authenticate user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "admin@rentx.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Session created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/SessionUser"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "bearer f970e2767d0cfe75876ea857f92e319b"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Email or password is incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars": {
+      "post": {
+        "tags": ["Car"],
+        "summary": "Create a new car",
+        "description": "Create a new car",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCar"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Car created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Car already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/available": {
+      "get": {
+        "tags": ["Car"],
+        "summary": "List all available cars",
+        "description": "List all available cars",
+        "responses": {
+          "200": {
+            "description": "Cars found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/images/{id}": {
+      "post": {
+        "tags": ["Car"],
+        "summary": "Upload car images",
+        "description": "Upload car images",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Car id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5e9f8f8f-c9c1-4b3f-b8e8-f9f8f8f8f8f8"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Car image uploaded"
+          }
+        }
+      }
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "ErrorMessage": {
         "type": "object",
@@ -217,6 +389,102 @@
           "description": {
             "type": "string",
             "example": "Category description sample"
+          }
+        }
+      },
+      "SessionUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Admin"
+          },
+          "email": {
+            "type": "string",
+            "example": "admin@rentx.com"
+          },
+          "is_admin": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "e0204a0c-4b02-455d-8033-b5899bfd6e95"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-31T16:05:58.510Z"
+          },
+          "available": {
+            "type": "boolean",
+            "example": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Audi A1"
+          },
+          "description": {
+            "type": "string",
+            "example": "Audi A1 description"
+          },
+          "daily_rate": {
+            "type": "number",
+            "example": 100
+          },
+          "licence_plate": {
+            "type": "string",
+            "example": "ABC-1234"
+          },
+          "fine_amount": {
+            "type": "number",
+            "example": 40
+          },
+          "brand": {
+            "type": "string",
+            "example": "Audi"
+          },
+          "category_id": {
+            "type": "string",
+            "example": "6b48659b-4e67-4613-a85f-a2d50c18280d"
+          }
+        }
+      },
+      "CreateCar": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Audi A1"
+          },
+          "description": {
+            "type": "string",
+            "example": "An good car"
+          },
+          "daily_rate": {
+            "type": "number",
+            "example": 100
+          },
+          "licence_plate": {
+            "type": "string",
+            "example": "ABC-1234"
+          },
+          "fine_amount": {
+            "type": "number",
+            "example": 40
+          },
+          "brand": {
+            "type": "string",
+            "example": "Audi"
+          },
+          "category_id": {
+            "type": "string",
+            "example": "d4f8f8f8-f8f8-f8f8-f8f8-f8f8f8f8f8f8"
           }
         }
       }

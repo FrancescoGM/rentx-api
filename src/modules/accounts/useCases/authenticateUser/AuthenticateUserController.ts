@@ -11,6 +11,6 @@ export class AuthenticateUserController {
 
     const data = await authenticateUserUseCase.execute({ email, password })
 
-    return res.status(201).json(data)
+    return res.status(200).json(data)
   }
 }
