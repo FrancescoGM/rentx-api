@@ -25,4 +25,8 @@ export class DayjsDateProvider implements IDateProvider {
   dateNow(): Date {
     return dayjs().utc().local().toDate()
   }
+
+  addDays(days: number): Date {
+    return dayjs().utc().add(days, 'day').local().toDate()
+  }
 }
