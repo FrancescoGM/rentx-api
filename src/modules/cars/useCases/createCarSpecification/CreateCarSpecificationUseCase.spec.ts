@@ -2,8 +2,8 @@ import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import { CarsRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory'
 import { SpecificationsRepositoryInMemory } from '@modules/cars/repositories/in-memory/SpecificationsRepositoryInMemory'
 import { ISpecificationsRepository } from '@modules/cars/repositories/ISpecificationsRepository'
-import { AppError } from '@shared/errors/AppError'
 
+import { CreateCarSpecificationError } from './CreateCarSpecificationError'
 import { CreateCarSpecificationUseCase } from './CreateCarSpecificationUseCase'
 
 let carsRepository: ICarsRepository
@@ -50,6 +50,6 @@ describe('Create car specification', () => {
         car_id: '123',
         specifications_id: ['123'],
       })
-    }).rejects.toBeInstanceOf(AppError)
+    }).rejects.toBeInstanceOf(CreateCarSpecificationError)
   })
 })

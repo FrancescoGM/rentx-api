@@ -1,10 +1,16 @@
 import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO'
 import { UsersRepositoryInMemory } from '@modules/accounts/repositories/in-memory/UsersRepositoryInMemory'
-import { AppError } from '@shared/errors/AppError'
+import { UsersTokensRepositoryInMemory } from '@modules/accounts/repositories/in-memory/UsersTokensRepositoryInMemory'
+import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository'
+import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider'
+import { DayjsDateProvider } from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider'
 
 import { CreateUserUseCase } from '../createUser/CreateUserUseCase'
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase'
+import { IncorrectEmailOrPasswordError } from './IncorrectEmailOrPasswordError'
 
+let dateProvider: IDateProvider
+let usersTokensRepository: IUsersTokensRepository
 let usersRepositoryInMemory: UsersRepositoryInMemory
 let authenticateUserUseCase: AuthenticateUserUseCase
 let createUserUseCase: CreateUserUseCase
@@ -18,9 +24,13 @@ const user: ICreateUserDTO = {
 
 describe('Authenticate user', () => {
   beforeEach(() => {
+    dateProvider = new DayjsDateProvider()
+    usersTokensRepository = new UsersTokensRepositoryInMemory()
     usersRepositoryInMemory = new UsersRepositoryInMemory()
     authenticateUserUseCase = new AuthenticateUserUseCase(
-      usersRepositoryInMemory
+      usersRepositoryInMemory,
+      usersTokensRepository,
+      dateProvider
     )
     createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory)
   })
@@ -44,7 +54,7 @@ describe('Authenticate user', () => {
         email: 'johndoe@johndoe.com',
         password: '123456',
       })
-    }).rejects.toBeInstanceOf(AppError)
+    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError)
   })
 
   it('Should not be able to authenticate an user with wrong password', async () => {
@@ -55,6 +65,6 @@ describe('Authenticate user', () => {
         email: user.email,
         password: 'wrong-password',
       })
-    }).rejects.toBeInstanceOf(AppError)
+    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError)
   })
 })

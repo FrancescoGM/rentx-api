@@ -4,7 +4,8 @@ import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import { Rental } from '@modules/rentais/infra/typeorm/entities/Rental'
 import { IRentalsRepository } from '@modules/rentais/repositories/IRentalsRepository'
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider'
-import { AppError } from '@shared/errors/AppError'
+
+import { DevolutionRentalError } from './DevolutionRentalError'
 
 interface IRequest {
   id: string
@@ -27,15 +28,15 @@ export class DevolutionRentalUseCase {
     const car = await this.carsRepository.findById(rental.car_id)
 
     if (!rental) {
-      throw new AppError('Rental does not exists', 404)
+      throw new DevolutionRentalError.RentalDoesNotExists()
     }
 
     if (rental.user_id !== user_id) {
-      throw new AppError('User does not have permission to devolution', 403)
+      throw new DevolutionRentalError.UserDoesNotHavePermissionToDevolution()
     }
 
     if (rental.end_date) {
-      throw new AppError('Car already devolution', 400)
+      throw new DevolutionRentalError.CarAlreadyDevolutioned()
     }
 
     const minimum_daily = 1

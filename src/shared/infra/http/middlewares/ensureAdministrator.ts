@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-import { AppError } from '@shared/errors/AppError'
+import { PermissionError } from '@shared/errors/PermissionError'
 
 export function ensureAdministrator(
   req: Request,
@@ -11,5 +11,5 @@ export function ensureAdministrator(
     return next()
   }
 
-  throw new AppError('You must be an administrator to access this route', 401)
+  throw new PermissionError.MustBeAdministrator()
 }

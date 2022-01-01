@@ -6,7 +6,8 @@ import auth from '@config/auth'
 import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository'
 import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository'
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider'
-import { AppError } from '@shared/errors/AppError'
+
+import { IncorrectEmailOrPasswordError } from './IncorrectEmailOrPasswordError'
 
 interface IRequest {
   email: string
@@ -36,13 +37,13 @@ export class AuthenticateUserUseCase {
     const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {
-      throw new AppError('Email or password incorrect', 400)
+      throw new IncorrectEmailOrPasswordError()
     }
 
     const passwordMatched = await compare(password, user.password)
 
     if (!passwordMatched) {
-      throw new AppError('Email or password incorrect', 400)
+      throw new IncorrectEmailOrPasswordError()
     }
 
     const token = sign(

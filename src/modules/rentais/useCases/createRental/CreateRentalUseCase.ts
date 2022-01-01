@@ -4,7 +4,8 @@ import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import { Rental } from '@modules/rentais/infra/typeorm/entities/Rental'
 import { IRentalsRepository } from '@modules/rentais/repositories/IRentalsRepository'
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider'
-import { AppError } from '@shared/errors/AppError'
+
+import { CreateRentalError } from './CreateRentalError'
 
 interface IRequest {
   user_id: string
@@ -34,10 +35,7 @@ export class CreateRentalUseCase {
     const minimumHours = 24
 
     if (compareDate < minimumHours) {
-      throw new AppError(
-        'Expected return date must be at least 24 hours from now',
-        400
-      )
+      throw new CreateRentalError.ExpectReturnDate()
     }
 
     const carAlreadyRented = await this.rentalsRepository.findOpenRentalByCarId(
@@ -45,14 +43,14 @@ export class CreateRentalUseCase {
     )
 
     if (carAlreadyRented) {
-      throw new AppError('Car already rented', 400)
+      throw new CreateRentalError.CarAlreadyRented()
     }
 
     const userAlreadyRented =
       await this.rentalsRepository.findOpenRentalByUserId(user_id)
 
     if (userAlreadyRented) {
-      throw new AppError('User already rented a car', 400)
+      throw new CreateRentalError.UserAlreadyRented()
     }
 
     const rental = await this.rentalsRepository.create({

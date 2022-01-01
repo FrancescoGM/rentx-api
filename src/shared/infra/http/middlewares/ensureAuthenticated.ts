@@ -3,7 +3,7 @@ import { verify } from 'jsonwebtoken'
 
 import auth from '@config/auth'
 import { UsersRepository } from '@modules/accounts/infra/typeorm/repositories/implementations/UsersRepository'
-import { AppError } from '@shared/errors/AppError'
+import { JWTError } from '@shared/errors/JWTError'
 
 interface IPayload {
   sub: string
@@ -17,7 +17,7 @@ export async function ensureAuthenticated(
   const authToken = req.headers.authorization as string
 
   if (!authToken) {
-    throw new AppError('Token is missing', 401)
+    throw new JWTError.TokenIsMissing()
   }
 
   const [, token] = authToken.split(' ')
@@ -29,13 +29,13 @@ export async function ensureAuthenticated(
     const user = await usersRepository.findById(userId)
 
     if (!user) {
-      throw new AppError('User does not exists', 401)
+      throw new JWTError.UserNotFound()
     }
 
     req.user = user
 
     next()
   } catch {
-    throw new AppError('Token invalid', 400)
+    throw new JWTError.InvalidToken()
   }
 }

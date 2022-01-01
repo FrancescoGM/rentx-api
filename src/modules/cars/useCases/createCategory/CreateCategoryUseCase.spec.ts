@@ -1,6 +1,6 @@
 import { CategoriesRepositoryInMemory } from '@modules/cars/repositories/in-memory/CategoriesRepositoryInMemory'
-import { AppError } from '@shared/errors/AppError'
 
+import { CreateCategoryError } from './CreateCategoryError'
 import { CreateCategoryUseCase } from './CreateCategoryUseCase'
 
 let createCategoryUseCase: CreateCategoryUseCase
@@ -39,6 +39,6 @@ describe('Create Category', () => {
       }
       await createCategoryUseCase.execute(category)
       await createCategoryUseCase.execute(category)
-    }).rejects.toBeInstanceOf(AppError)
+    }).rejects.toBeInstanceOf(CreateCategoryError)
   })
 })

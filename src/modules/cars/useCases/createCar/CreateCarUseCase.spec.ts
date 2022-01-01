@@ -1,7 +1,7 @@
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import { CarsRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory'
-import { AppError } from '@shared/errors/AppError'
 
+import { CreateCarError } from './CreateCarError'
 import { CreateCarUseCase } from './CreateCarUseCase'
 
 let carsRepository: ICarsRepository
@@ -33,7 +33,7 @@ describe('Create Car', () => {
     expect(async () => {
       await createCarUseCase.execute(car)
       await createCarUseCase.execute(car)
-    }).rejects.toBeInstanceOf(AppError)
+    }).rejects.toBeInstanceOf(CreateCarError)
   })
 
   it('should be able to create a car with available true by default', async () => {
